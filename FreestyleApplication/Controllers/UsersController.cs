@@ -110,5 +110,46 @@ namespace FreestyleApplication.Controllers
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
+        // POST: api/AddUserToCompetition
+        [HttpPost("AddUserToCompetition")]
+        public async Task<ActionResult> AddUserToCompetition(int competitionId, List<int> users)
+        {
+            Competition competition = await _context.Competition.Include(x => x.Users).FirstOrDefaultAsync(x => x.Id == competitionId);
+
+            if (competition == null)
+                return NotFound();
+
+            foreach (int userId in users)
+            {
+                if (!competition.Users.Any(x => x.Id == userId))
+                {
+                    competition.Users.Add(_context.Users.FirstOrDefault(x => x.Id == userId));
+                }
+            }
+            _context.Entry(competition).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Ok();
+
+        }
+
+        [HttpGet("GetUserWithCompetition")]
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetUsersFromCompetition(int competitionId)
+        {
+            Competition competition = await _context.Competition.Include(x => x.Users).FirstOrDefaultAsync(x => x.Id == competitionId);
+            if (competition == null)
+                return NotFound();
+            IEnumerable<UserViewModel> listUsersViewModel = _mapper.Map<IEnumerable<UserViewModel>>(competition.Users);
+
+            return listUsersViewModel.ToList();
+        }
     }
 }

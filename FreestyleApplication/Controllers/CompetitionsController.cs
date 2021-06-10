@@ -47,7 +47,6 @@ namespace FreestyleApplication.Controllers
         }
 
         // PUT: api/Competitions/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompetition(int id, CompetitionViewModel competition)
         {
@@ -76,7 +75,6 @@ namespace FreestyleApplication.Controllers
         }
 
         // POST: api/Competitions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Competition>> PostCompetition(CompetitionViewModel competition)
         {
@@ -106,6 +104,17 @@ namespace FreestyleApplication.Controllers
         private bool CompetitionExists(int id)
         {
             return _context.Competition.Any(e => e.Id == id);
+        }
+
+        [HttpGet("GetCompetitionsFromUser")]
+        public async Task<ActionResult<IEnumerable<CompetitionViewModel>>> GetCompetitionsFromUser(int userId)
+        {
+            User user = await _context.Users.Include(x => x.Competitions).FirstOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+                return NotFound();
+            IEnumerable<CompetitionViewModel> listCompetitionsViewModel = _mapper.Map<IEnumerable<CompetitionViewModel>>(user.Competitions);
+
+            return listCompetitionsViewModel.ToList();
         }
     }
 }
