@@ -4,20 +4,37 @@ using FreestyleApplication.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FreestyleApplication.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210705151456_UserGroupTest")]
+    partial class UserGroupTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("BattleGroupUser", b =>
+                {
+                    b.Property<int>("BattleGroupsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BattleGroupsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("BattleGroupUser");
+                });
 
             modelBuilder.Entity("CompetitionUser", b =>
                 {
@@ -51,7 +68,7 @@ namespace FreestyleApplication.Migrations
                     b.ToTable("BattleGroups");
                 });
 
-            modelBuilder.Entity("FreestyleApplication.Models.BattleGroupUser", b =>
+            modelBuilder.Entity("FreestyleApplication.Models.BattleGroupUserTest", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -66,7 +83,7 @@ namespace FreestyleApplication.Migrations
 
                     b.HasIndex("BattleGroupId");
 
-                    b.ToTable("BattleGroupsUsers");
+                    b.ToTable("BattleGroupsUsersTest");
                 });
 
             modelBuilder.Entity("FreestyleApplication.Models.Competition", b =>
@@ -175,6 +192,21 @@ namespace FreestyleApplication.Migrations
                     b.ToTable("GroupUser");
                 });
 
+            modelBuilder.Entity("BattleGroupUser", b =>
+                {
+                    b.HasOne("FreestyleApplication.Models.BattleGroup", null)
+                        .WithMany()
+                        .HasForeignKey("BattleGroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FreestyleApplication.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CompetitionUser", b =>
                 {
                     b.HasOne("FreestyleApplication.Models.Competition", null)
@@ -199,16 +231,16 @@ namespace FreestyleApplication.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("FreestyleApplication.Models.BattleGroupUser", b =>
+            modelBuilder.Entity("FreestyleApplication.Models.BattleGroupUserTest", b =>
                 {
                     b.HasOne("FreestyleApplication.Models.BattleGroup", "BattleGroup")
-                        .WithMany("BattleGroupUsers")
+                        .WithMany("BattleGroupUserTest")
                         .HasForeignKey("BattleGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FreestyleApplication.Models.User", "User")
-                        .WithMany("BattleGroupUsers")
+                        .WithMany("BattleGroupUserTest")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -244,12 +276,12 @@ namespace FreestyleApplication.Migrations
 
             modelBuilder.Entity("FreestyleApplication.Models.BattleGroup", b =>
                 {
-                    b.Navigation("BattleGroupUsers");
+                    b.Navigation("BattleGroupUserTest");
                 });
 
             modelBuilder.Entity("FreestyleApplication.Models.User", b =>
                 {
-                    b.Navigation("BattleGroupUsers");
+                    b.Navigation("BattleGroupUserTest");
                 });
 #pragma warning restore 612, 618
         }

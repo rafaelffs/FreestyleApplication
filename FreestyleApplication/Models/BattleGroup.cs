@@ -9,7 +9,6 @@ namespace FreestyleApplication.Models
     {
         public int Id { get; set; }
         public Group Group { get; set; }
-        public List<User> Users { get; set; }
-
+        public List<BattleGroupUser> BattleGroupUser { get; set; }
     }
 }

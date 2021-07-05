@@ -18,7 +18,7 @@ namespace FreestyleApplication.Database
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<BattleGroup> BattleGroups { get; set; }
         public DbSet<Group> Groups { get; set; }
-        //public DbSet<GroupUser> GroupUsers { get; set; }
+        public DbSet<BattleGroupUser> BattleGroupsUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,17 +28,16 @@ namespace FreestyleApplication.Database
                 new User { Id = 3, Description = "Atleta a 09 anos", Email = "iago@hotmail.com", Name = "Iago", Nickname = "Pedalantis", Password = "teste123" }
                 );
 
-            //        modelBuilder.Entity<GroupUser>()
-            //.HasKey(gu => new { gu.GroupId, gu.UserId });
-            //        modelBuilder.Entity<GroupUser>()
-            //            .HasOne(gu => gu.Group)
-            //            .WithMany(b => b.GroupUser)
-            //            .HasForeignKey(gu => gu.GroupId);
-            //        modelBuilder.Entity<GroupUser>()
-            //            .HasOne(gu => gu.User)
-            //            .WithMany(c => c.GroupUsers)
-            //            .HasForeignKey(gu => gu.CategoryId);
-            //
+            modelBuilder.Entity<BattleGroupUser>()
+                 .HasKey(bgu => new { bgu.UserId, bgu.BattleGroupId });
+            modelBuilder.Entity<BattleGroupUser>()
+                .HasOne(bgu => bgu.User)
+                .WithMany(u => u.BattleGroupUsers)
+                .HasForeignKey(bgu => bgu.UserId);
+            modelBuilder.Entity<BattleGroupUser>()
+                .HasOne(bgu => bgu.BattleGroup)
+                .WithMany(bg => bg.BattleGroupUsers)
+                .HasForeignKey(bgu => bgu.BattleGroupId);
         }
 
 

@@ -15,6 +15,6 @@ namespace FreestyleApplication.Models
         public string Password { get; set; }
         public List<Competition> Competitions { get; set; }
         public List<Group> Groups { get; set; }
-        public List<BattleGroup> BattleGroups { get; set; }
+        public List<BattleGroupUser> BattleGroupUsers { get; set; }
     }
 }

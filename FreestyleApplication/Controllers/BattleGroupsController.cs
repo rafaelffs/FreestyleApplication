@@ -119,10 +119,10 @@ namespace FreestyleApplication.Controllers
                 for (int y = i + 1; y < group.Users.Count; y++)
                 {
                     BattleGroup battleGroup = new BattleGroup();
-                    battleGroup.Users = new List<User>();
                     battleGroup.Group = group;
-                    battleGroup.Users.Add(group.Users[i]);
-                    battleGroup.Users.Add(group.Users[y]);
+                    battleGroup.BattleGroupUsers = new List<BattleGroupUser>();
+                    battleGroup.BattleGroupUsers.Add(new BattleGroupUser() { User = group.Users[i], BattleGroup = battleGroup });
+                    battleGroup.BattleGroupUsers.Add(new BattleGroupUser() { User = group.Users[y], BattleGroup = battleGroup });
                     list.Add(battleGroup);
                 }
             }
