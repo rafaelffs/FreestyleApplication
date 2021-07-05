@@ -29,14 +29,14 @@ namespace FreestyleApplication.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompetitionViewModel>>> GetCompetition()
         {
-            return _mapper.Map<IEnumerable<CompetitionViewModel>>(await _context.Competition.ToListAsync()).ToList();
+            return _mapper.Map<IEnumerable<CompetitionViewModel>>(await _context.Competitions.ToListAsync()).ToList();
         }
 
         // GET: api/Competitions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompetitionViewModel>> GetCompetition(int id)
         {
-            var competition = await _context.Competition.FindAsync(id);
+            var competition = await _context.Competitions.FindAsync(id);
 
             if (competition == null)
             {
@@ -89,13 +89,13 @@ namespace FreestyleApplication.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompetition(int id)
         {
-            var competition = await _context.Competition.FindAsync(id);
+            var competition = await _context.Competitions.FindAsync(id);
             if (competition == null)
             {
                 return NotFound();
             }
 
-            _context.Competition.Remove(competition);
+            _context.Competitions.Remove(competition);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -103,7 +103,7 @@ namespace FreestyleApplication.Controllers
 
         private bool CompetitionExists(int id)
         {
-            return _context.Competition.Any(e => e.Id == id);
+            return _context.Competitions.Any(e => e.Id == id);
         }
 
         [HttpGet("GetCompetitionsFromUser")]

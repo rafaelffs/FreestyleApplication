@@ -4,14 +4,16 @@ using FreestyleApplication.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FreestyleApplication.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210705125524_UpdateBattleGroups")]
+    partial class UpdateBattleGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,13 @@ namespace FreestyleApplication.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BattleId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
